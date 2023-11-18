@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Alquilar Juego: {{ juego.nombre }}</h1>
+
+<p>Director: {{ juego.director }}</p>
+<p>Protagonistas: {{ juego.protagonistas }}</p>
+<p>Productor: {{ juego.productor }}</p>
+<p>Fecha de Lanzamiento: {{ juego.ano }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="fecha_alquiler">Fecha de Alquiler:</label>
+        <input type="date" name="fecha_alquiler" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Alquilar</button>
+</form>
+{% endblock %}

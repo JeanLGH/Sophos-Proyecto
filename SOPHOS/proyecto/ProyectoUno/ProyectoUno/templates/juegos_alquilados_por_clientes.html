@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4 mb-4">Juegos Alquilados por Clientes</h1>
+
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="cliente_busqueda" class="form-control" placeholder="Buscar clientes">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
+    <form method="get">
+        <div class="form-group">
+            <label for="edad_min">Edad mínima:</label>
+            <input type="number" name="edad_min" class="form-control" id="edad_min" value="{{ edad_min }}" min="0">
+        </div>
+        <div class="form-group">
+            <label for="edad_max">Edad máxima:</label>
+            <input type="number" name="edad_max" class="form-control" id="edad_max" value="{{ edad_max }}" min="0">
+        </div>
+        <button type="submit" class="btn btn-secondary mb-4">Buscar</button>
+    </form>
+    
+    <form method="get">
+        <input type="hidden" name="edad_min_hidden" id="edad_min_hidden" value="{{ edad_min }}">
+        <input type="hidden" name="edad_max_hidden" id="edad_max_hidden" value="{{ edad_max }}">
+        <button type="submit" class="btn btn-secondary mb-4" name="ordenar_clientes" value="asc">Ordenar de menor a mayor</button>
+        <button type="submit" class="btn btn-secondary mb-4" name="ordenar_clientes" value="desc">Ordenar de mayor a menor</button>
+    </form>
+    
+    
+    
+    
+    
+
+    <button class="btn btn-primary mb-4" id="toggleTablaBtn">Mostrar/Ocultar Tabla de Juegos Rentados</button>
+    
+    <div id="tablaJuegosRentados" style="display: none;">
+        <button id="ordenarTabla">Ordenar por Frecuencia</button>
+        <h2 class="mt-4 mb-2">Tabla de Juegos Rentados</h2>
+        <table class="table" id="tablaJuegos">
+            <thead>
+                <tr>
+                    <th>Juego</th>
+                    <th>Número de Rentados</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for juego in juegos_frecuencia %}
+                    <tr>
+                        <td>{{ juego.nombre }}</td>
+                        <td>{{ juego.num_alquileres }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+   {% for cliente, info_cliente in juegos_por_cliente.items %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>{{ cliente.nombre }} - {{ info_cliente.edad }} años</h2>
+        </div>
+        <div class="card-body">
+            {% if info_cliente.juegos_alquilados %}
+                <ul class="list-group">
+                    {% for juego in info_cliente.juegos_alquilados %}
+                        <li class="list-group-item">{{ juego.nombre }} - {{ juego.plataforma }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No hay juegos alquilados por este cliente.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<script>
+    document.getElementById('toggleTablaBtn').addEventListener('click', function () {
+        var tabla = document.getElementById('tablaJuegosRentados');
+        tabla.style.display = tabla.style.display === 'none' ? 'block' : 'none';
+    });
+    document.querySelector('form').addEventListener('submit', function () {
+        document.getElementById('edad_min_hidden').value = document.getElementById('edad_min').value;
+        document.getElementById('edad_max_hidden').value = document.getElementById('edad_max').value;
+    });
+    
+
+    $(document).ready(function() {
+        // Al hacer clic en el botón, ordenar la tabla
+        $("#ordenarTabla").click(function() {
+            var tabla = $("#tablaJuegos tbody");
+            var filas = tabla.find('tr').toArray().sort(compararFilas);
+            this.asc = !this.asc;
+            if (!this.asc) {
+                filas = filas.reverse();
+            }
+            for (var i = 0; i < filas.length; i++) {
+                tabla.append(filas[i]);
+            }
+        });
+        
+        function compararFilas(a, b) {
+            var valA = parseInt($(a).find('td').eq(1).text());
+            var valB = parseInt($(b).find('td').eq(1).text());
+            return valA - valB;
+        }
+    });
+</script>
+
+{% endblock %}

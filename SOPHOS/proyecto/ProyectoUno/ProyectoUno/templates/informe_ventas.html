@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Informe de Ventas por Día</h1>
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="date" name="fecha_inicio" class="form-control">
+        <span class="input-group-text">hasta</span>
+        <input type="date" name="fecha_fin" class="form-control">
+        <input type="text" name="codigo_venta" class="form-control" placeholder="Código de Venta">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </div>
+</form>
+
+{% for fecha, ventas_en_fecha in ventas_agrupadas.items %}
+    <h2>{{ fecha }} - Código de Venta: {{ ventas_en_fecha.0.codigo_venta }}</h2>
+    <a href="{% url 'generar_pdf' fecha=fecha %}" class="btn btn-primary">Descargar PDF</a>
+    <button class="btn btn-primary" onclick="toggleTable('{{ fecha }}')">Mostrar/ocultar tabla</button>
+    <table class="table" id="{{ fecha }}" style="display: none;">
+        <thead>
+            <tr>
+                <th>Número de Venta</th>
+                <th>Cliente</th>
+                <th>Juego Alquilado</th>
+                <th>Fecha de Venta</th>
+                <th>Total Pagado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas_en_fecha %}
+                <tr>
+                    <td>{{ venta.id }}</td>
+                    <td>{{ venta.alquiler.cliente.nombre }}</td>
+                    <td>{{ venta.alquiler.juego.nombre }}</td>
+                    <td>{{ venta.fecha }}</td>
+                    <td>{{ venta.monto_total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+
+<p>Total de Ventas: {{ total_ventas }}</p>
+
+<script>
+    function toggleTable(fecha) {
+        var tabla = document.getElementById(fecha);
+        tabla.style.display = tabla.style.display === 'none' ? 'table' : 'none';
+    }
+    </script>
+{% endblock %}

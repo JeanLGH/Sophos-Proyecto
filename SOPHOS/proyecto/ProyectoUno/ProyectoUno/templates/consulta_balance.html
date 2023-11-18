@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Balance</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="display-4">Consulta de Balance</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="email_cliente">Email del Cliente:</label>
+            <input type="email" class="form-control" id="email_cliente" name="email_cliente" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Consultar</button>
+    </form>
+
+    
+    {% if cliente_no_existe %}
+    <p>No existe un cliente con ese email.</p>
+{% else %}
+    {% if cliente %}
+        <h2>Información de Alquiler para {{ cliente.nombre }}</h2>
+        {% if datos_alquiler %}
+            <ul>
+                {% for alquiler in datos_alquiler %}
+                    <li>{{ alquiler.fecha_alquiler }} - {{ alquiler.fecha_devolucion }} - {{ alquiler.nombre_juego }} - </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay alquileres activos para este cliente.</p>
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

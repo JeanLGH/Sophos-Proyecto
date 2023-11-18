@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Alquilar "{{ juego.nombre }}"</h1>
+    <p><strong>Subtotal: ${{ juego.precio }}</strong></p>
+    <p><strong>Total: ${{ precio_alquiler }}</strong></p>
+    <form method="post" action="{% url 'ingresar_datos_cliente' juego.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nombre_cliente" class="form-label">Nombre del Cliente:</label>
+            <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="telefono_cliente" class="form-label">Teléfono:</label>
+            <input type="tel" class="form-control" id="telefono_cliente" name="telefono_cliente" required>
+        </div>
+        <div class="mb-3">
+            <label for="edad_cliente" class="form-label">Edad:</label>
+            <input type="number" class="form-control" id="edad_cliente" name="edad_cliente" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Confirmar Alquiler</button>
+    </form>
+</div>
+{% endblock %}
