@@ -6,7 +6,6 @@ VALUES
 ('God of War', 2018, 'Kratos, Atreus', 'Cory Barlog', 'Santa Monica Studio', 'PlayStation 4', 49.99),
 ('Grand Theft Auto V', 2013, 'Michael, Franklin, Trevor', 'Leslie Benzies', 'Rockstar North', 'Xbox 360', 29.99),
 ('Super Mario Odyssey', 2017, 'Mario, Cappy', 'Kenta Motokura', 'Nintendo', 'Nintendo Switch', 59.99),
--- ... (continuar con más juegos y sus detalles)
 ('Assassin''s Creed Valhalla', 2020, 'Eivor', 'Ashraf Ismail', 'Ubisoft', 'PlayStation 5', 59.99),
 ('Cyberpunk 2077', 2020, 'V', 'Adam Badowski', 'CD Projekt', 'Xbox Series X', 49.99),
 ('Spider-Man Miles Morales', 2020, 'Miles Morales', 'Brian Horton', 'Insomniac Games', 'PlayStation 5', 49.99),
